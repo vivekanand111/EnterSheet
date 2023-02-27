@@ -1,0 +1,13 @@
+.formLabel {
+    font-size: medium;
+    font-weight: 500;
+    padding: 10px;
+    padding-left: 0px;
+}
+.blockheading {
+    font-size: medium;
+    font-weight: 600;
+    padding: 10px;
+    text-decoration: underline;
+    padding-left: 0px;
+}
