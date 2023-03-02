@@ -23,10 +23,15 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.role === 'ADMIN') {
-      navigate('/adminhome');
-    } else if (user?.role === 'USER') {
-      navigate('/userhome');
+    const path = window.location.pathname
+    if (user) {
+      if (user.role === 'ADMIN') {
+        navigate('/adminhome');
+      } else if (user.role === 'USER') {
+        navigate('/userhome');
+      }
+    } else if (path === '/login' || path === '/signup') {
+      // allow access to login and signup pages
     } else {
       navigate('/login');
     }
