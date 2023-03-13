@@ -29,7 +29,7 @@ Clone the repository.\
 Install all the dependencies by running the command: npm install in directory.\
 Run the frontend server by running the command: npm start in the frontend directory.
 
-Get the backend from https://github.com/vivekanand111/EnterSheetBackend\
+Get the backend from https://github.com/vivekanand111/EnterSheetBackend \
 Create the database schema into your MySQL server.\
 Change the database configuration in the backend/src/main/resources/application.yaml file.\
 Run the backend server by running the command: ./gradlew bootrun in the backend directory.
@@ -43,9 +43,7 @@ From the dashboard, you can view and download the records of all the employees.\
 Employees can log in using their login credentials and enter the details of the tasks they have performed.
 
 Contributing:
-
 Contributions are welcome. You can fork the repository, make changes, and create a pull request.
 
 License:
-
 This project is licensed under the MIT License.
