@@ -42,8 +42,8 @@ Once you log in, you will be redirected to the admin dashboard.\
 From the dashboard, you can view and download the records of all the employees.\
 Employees can log in using their login credentials and enter the details of the tasks they have performed.
 
-Contributing:
+Contributing:\
 Contributions are welcome. You can fork the repository, make changes, and create a pull request.
 
-License:
+License:\
 This project is licensed under the MIT License.
