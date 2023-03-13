@@ -26,30 +26,34 @@ export default function Login() {
 
    const navigate = useNavigate();
 
-   const handleSubmit = (event) => {
+   const handleSubmit = async(event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
       let obj = {
          email: data.get('email'),
          password: data.get('password'),
       }
-      apiClient.post("/login", obj)
-         .then(res => {
-            console.log(res.data)
-            if (res.data) {
-               store.dispatch(setAuth(res.data))
-               store.dispatch(loadUser()).then((r) => {
-                  if (r.payload.role == "USER") {
-                     navigate("/userhome")
-                  } else if (r.payload.role == "ADMIN") {
-                     navigate("/adminhome")
-                  }
+      try{
+         const res=await apiClient.post("/login", obj)
+         if (res.data) {
+            store.dispatch(setAuth(res.data))
+            store.dispatch(loadUser()).then((r) => {
+               if (r.payload.role == "USER") {
+                  navigate("/userhome")
+               } else if (r.payload.role == "ADMIN") {
+                  navigate("/adminhome")
+               }
 
-               })
-            }
-         }).catch(e => {
-            console.log("login api " + e)
-         })
+            })
+         }
+      }catch(error){
+         console.log(error)
+         if(error?.response?.data){
+            alert(error?.response?.data)
+         }else{
+            alert("Network Error")
+         }
+      }
    };
 
    return (
@@ -91,10 +95,6 @@ export default function Login() {
                      id="password"
                      autoComplete="current-password"
                   />
-                  <FormControlLabel
-                     control={<Checkbox value="remember" color="primary" />}
-                     label="Remember me"
-                  />
                   <Button
                      type="submit"
                      fullWidth
@@ -106,7 +106,7 @@ export default function Login() {
                   <Grid container>
                      <Grid item xs>
                         <Link href={""} onClick={() => {
-                           navigate("/forgot-password")
+                           navigate("/forgotpassword")
                         }} variant="body2">
                            Forgot password?
                         </Link>

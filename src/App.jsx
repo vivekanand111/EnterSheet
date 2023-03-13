@@ -9,6 +9,8 @@ import store from './store/store'
 import './App.css'
 import { loadUser, setAuth } from './store/tasksSlice'
 import { useEffect } from 'react'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
 
@@ -24,13 +26,14 @@ function App() {
 
   useEffect(() => {
     const path = window.location.pathname
+    const allowedRoutes = ['/login', '/signup', '/forgotpassword',"/resetpassword"]
     if (user) {
       if (user.role === 'ADMIN') {
         navigate('/adminhome');
       } else if (user.role === 'USER') {
         navigate('/userhome');
       }
-    } else if (path === '/login' || path === '/signup') {
+    } else if (allowedRoutes.includes(path)) {
       // allow access to login and signup pages
     } else {
       navigate('/login');
@@ -44,6 +47,8 @@ function App() {
       <Route path='/signup' element={<SignUp />} />
       <Route path="/userhome" element={<UserDashboard />} />
       <Route path='/adminhome' element={<AdminDashboard />} />
+      <Route path='/forgotpassword' element={<ForgotPassword />} />
+      <Route path='/resetpassword' element={<ResetPassword />} />
       <Route path='*' element={<ErrorPage />} />
     </Routes>
   )

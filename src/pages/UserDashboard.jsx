@@ -81,7 +81,7 @@ export default function UserDashboard() {
               id="panel1bh-header"
             >
               <Typography sx={{ width: '33%', flexShrink: 0, color: 'text.secondary' }}>Week start</Typography>
-              <Typography sx={{}}> {each.week_start}</Typography>
+              <Typography sx={{}}> {each.weekStart}</Typography>
             </AccordionSummary>
 
             <TableContainer component={Paper} color="red">

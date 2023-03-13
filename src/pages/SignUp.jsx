@@ -44,6 +44,11 @@ export default function SignUp() {
   })
   const [errors, setformErrors] = useState({})
 
+  const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setotpVerified] = useState(false)
+  const [loading, setloading] = useState(false)
+
   const navigate = useNavigate()
 
   const handleChageValue = (val, name) => {
@@ -52,7 +57,7 @@ export default function SignUp() {
 
   return (
 
-    <div className="p-4" >
+    <div className="card p-3 m-3" >
       <div className='d-flex align-items-center justify-content-center'>
         <p style={{ fontSize: "25px" }}>Sign Up</p>
       </div>
@@ -61,6 +66,9 @@ export default function SignUp() {
           e.preventDefault()
           let errors = validateForm(formValues)
           setformErrors(errors)
+          if (!otpVerified) {
+            alert("Email not verified")
+          }
           if (Object.keys(errors).length == 0) {
             //console.log(formValues);
             (async () => {
@@ -96,10 +104,68 @@ export default function SignUp() {
         <div className="form-group">
           <label className='formLabel'>Email Address</label>
           <input name="email" type="email"
-            value={formValues.email} onChange={(e) => handleChageValue(e.target.value, e.target.name)}
+            value={formValues.email} onChange={(e) => {
+              setOtpSent(false)
+              setotpVerified(false)
+              handleChageValue(e.target.value, e.target.name)
+            }}
             className={(errors.email) ? 'form-control is-invalid' : 'form-control'} />
           {errors.email && <div className="invalid-feedback">{errors.email}</div>}
         </div>
+
+        {validator.isEmail(formValues.email) && !otpVerified && <div className="form-group mt-2">
+          <Button style={{ width: "100%", backgroundColor: "red" }} onClick={async () => {
+            setloading(true)
+            try {
+              const res = await apiClient.post("/otp/sendOtp", { email: formValues.email })
+              if (res.data.message == "Otp sent") {
+                setOtpSent(true)
+                setOtp("")
+                alert("Otp sent to your mail.")
+              }
+            } catch (error) {
+              console.log(error)
+              if (error?.response?.data?.message) {
+                alert(error?.response?.data.message)
+              } else {
+                alert("Network Error")
+              }
+            }
+            setloading(false)
+
+          }} variant="contained" disabled={loading}>
+            {loading ? (
+              <div className="spinner-border text-light" role="status">
+
+              </div>
+            ) : "Send mail OTP"}</Button>
+        </div>}
+
+        {otpSent && !otpVerified && <div className="form-group row m-1 mt-2" style={{ backgroundColor: "lightyellow" }}>
+          <label className='formLabel col'>Enter Otp</label>
+          <input type="text" className='col form-control'
+            value={otp} onChange={(e) => { setOtp(e.target.value) }}
+          />
+          <Button className='col' style={{ marginLeft: "10px" }} onClick={async () => {
+            try {
+              const res = await apiClient.post("/otp/verifyOtp", { email: formValues.email, otp: otp })
+              if (res.data.status) {
+                setotpVerified(true)
+              }
+            } catch (error) {
+              console.log(error)
+              if (error?.response?.data?.message) {
+                alert(error?.response?.data.message)
+              } else {
+                alert("Network Error")
+              }
+            }
+          }} variant="contained">Verify</Button>
+        </div>}
+
+        {otpVerified && <div>
+          <Button style={{ width: "100%", marginTop: "10px", backgroundColor: "green", color: "white" }}
+            disabled variant="contained" >OTP Verified</Button></div>}
 
         <div className="form-group">
           <label className='formLabel'>Mobile Number</label>
